@@ -17,18 +17,16 @@ module.exports = (phase, { defaultConfig }) => {
     pageExtensions: ['tsx', 'ts'],
     experimental: {
       swcPlugins: [
-        // [
-        //   'swc-plugin-another-transform-imports',
-        //   {
-        //     "antd": {
-        //       "transform": "antd/es/${member}",
-        //       "skipDefaultConversion": false,
-        //       "preventFullImport": true,
-        //       "style": "antd/es/${member}/style",
-        //       "memberTransformers": ["dashed_case"]
-        //     }
-        //   }
-        // ]
+        [
+          '@swc/plugin-transform-imports',
+          {
+            antd: {
+              transform: "antd/es/${member}",
+              skipDefaultConversion: false,
+              preventFullImport: true
+            }
+          }
+        ],
         [
           '@swc/plugin-styled-components',
           {
