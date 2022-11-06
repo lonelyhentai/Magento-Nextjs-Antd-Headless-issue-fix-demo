@@ -1,9 +1,12 @@
 import type { AppProps } from 'next/app'
-import 'antd/dist/antd.css'
-import '../styles/vars.css'
+import { ThemeProvider } from 'styled-components'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+const App = ({ Component, pageProps }: AppProps) => {
+  return (
+    <ThemeProvider theme={{}}>
+      <Component {...pageProps} />
+    </ThemeProvider>
+  )
 }
 
-export default MyApp
+export default App

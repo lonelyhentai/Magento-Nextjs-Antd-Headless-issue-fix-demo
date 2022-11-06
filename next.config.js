@@ -15,6 +15,34 @@ module.exports = (phase, { defaultConfig }) => {
     distDir: '.next',
     generateEtags: false,
     pageExtensions: ['tsx', 'ts'],
+    experimental: {
+      swcPlugins: [
+        // [
+        //   'swc-plugin-another-transform-imports',
+        //   {
+        //     "antd": {
+        //       "transform": "antd/es/${member}",
+        //       "skipDefaultConversion": false,
+        //       "preventFullImport": true,
+        //       "style": "antd/es/${member}/style",
+        //       "memberTransformers": ["dashed_case"]
+        //     }
+        //   }
+        // ]
+        [
+          '@swc/plugin-styled-components',
+          {
+            namespace: 'headless',
+            ssr: true,
+            displayName: true,
+            fileName: false,
+            minify: true,
+            pure: true,
+            transpileTemplateLiterals: true
+          }
+        ]
+      ]
+    },
     serverRuntimeConfig: {
       // Will only be available on the server side
     },
