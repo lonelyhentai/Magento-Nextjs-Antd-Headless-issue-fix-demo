@@ -1,3 +1,4 @@
+const withAntdLess = require('next-plugin-antd-less')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.REACT_APP_BUNDLE_VISUALIZE === '1'
 })
@@ -8,7 +9,7 @@ module.exports = (phase, { defaultConfig }) => {
   /**
    * @type {import('next').NextConfig}
    */
-  const nextConfig = {
+  const nextConfig = withAntdLess({
     reactStrictMode: true,
     swcMinify: true,
     compress: false,
@@ -21,10 +22,10 @@ module.exports = (phase, { defaultConfig }) => {
           'swc-plugin-another-transform-imports',
           {
             antd: {
-              transform: 'antd/es/${member}',
+              transform: 'antd/lib/${member}',
               skipDefaultConversion: false,
               preventFullImport: true,
-              style: 'antd/es/${member}/style',
+              style: 'antd/lib/${member}/style',
               memberTransformers: ['dashed_case']
             }
           }
@@ -51,25 +52,9 @@ module.exports = (phase, { defaultConfig }) => {
     },
     webpack: (config, {}) => {
       // Important: return the modified config
-      config.module.rules.push({
-        test: /\.less$/,
-        use: [
-          'css-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              lessOptions: {
-                javascriptEnabled: true,
-                modifyVars: {}
-              }
-            }
-          }
-        ]
-      })
-
       return config
     }
-  }
+  })
 
   return isProd ? withBundleAnalyzer(nextConfig) : nextConfig
 }
