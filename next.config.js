@@ -1,7 +1,8 @@
-const withAntdLess = require('next-plugin-antd-less')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.REACT_APP_BUNDLE_VISUALIZE === '1'
 })
+
+const withAntdLess = require('next-plugin-antd-less');
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -16,6 +17,17 @@ module.exports = (phase, { defaultConfig }) => {
     distDir: '.next',
     generateEtags: false,
     pageExtensions: ['tsx', 'ts'],
+    compiler: {
+      styledComponents: {
+        ssr: true,
+        displayName: true,
+        fileName: false,
+        minify: true,
+        namespace: 'headless',
+        pure: true,
+        transpileTemplateLiterals: true
+      }
+    },
     experimental: {
       swcPlugins: [
         [
@@ -29,18 +41,6 @@ module.exports = (phase, { defaultConfig }) => {
               memberTransformers: ['dashed_case']
             }
           }
-        ],
-        [
-          '@swc/plugin-styled-components',
-          {
-            namespace: 'headless',
-            ssr: true,
-            displayName: true,
-            fileName: false,
-            minify: true,
-            pure: true,
-            transpileTemplateLiterals: true
-          }
         ]
       ]
     },
@@ -50,11 +50,8 @@ module.exports = (phase, { defaultConfig }) => {
     publicRuntimeConfig: {
       // Will be available on both server and client
     },
-    webpack: (config, {}) => {
-      // Important: return the modified config
-      return config
-    }
   })
 
-  return isProd ? withBundleAnalyzer(nextConfig) : nextConfig
+
+  return isProd ? withBundleAnalyzer(nextConfig) : nextConfig;
 }
